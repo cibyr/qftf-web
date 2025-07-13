@@ -1,4 +1,5 @@
 import { BarcodeDetectorPolyfill } from '@undecaf/barcode-detector-polyfill'
+import init, { EchoNode } from "../public/wasm/qft_web.js";
 
 const el = {}
 
@@ -12,7 +13,8 @@ const
 
 let
     detector,
-    requestId = null;
+    requestId = null,
+    launched = false;
 
 
 async function createDetector() {
@@ -27,6 +29,12 @@ function log(line, className, parent) {
   el.innerHTML = line;
   if (className) el.classList.add(className);
   parent.appendChild(el);
+}
+
+function areWeReady() {
+    if (launched && el.txcode.value != '' && el.rxcode.value != '') {
+        el.goBtn.disabled = false;
+    }
 }
 
 function parseQrCode(rawValue) {
@@ -56,6 +64,7 @@ function detect(source) {
 
             symbols.forEach(symbol => {
                 const qftCode = parseQrCode(symbol.rawValue);
+                areWeReady();
 
                 const lastCornerPoint = symbol.cornerPoints[symbol.cornerPoints.length - 1]
                 ctx.moveTo(lastCornerPoint.x, lastCornerPoint.y)
@@ -68,8 +77,6 @@ function detect(source) {
                     ctx.strokeStyle = '#e00000ff'
                 }
                 ctx.stroke();
-
-                parseQrCode(symbol.rawValue);
             })
         })
 }
@@ -121,3 +128,30 @@ el.videoBtn.addEventListener('click', event => {
         }
     }
 })
+
+log("Loading...");
+await init();
+const node = await EchoNode.spawn();
+launched = true;
+areWeReady();
+log("Iroh endpoint launched");
+log("Our node id: " + node.node_id());
+
+// initiate QFT on form submit
+async function onQftSubmit(e) {
+  e.preventDefault();
+  const data = new FormData(e.target);
+  const txcode = data.get("txcode");
+  const rxcode = data.get("rxcode");
+  if (!txcode || !rxcode) return;
+
+  try {
+    log("QFTing...");
+    await node.trigger_qft(txcode, rxcode);
+    log("Yay!");
+  } catch (err) {
+    log(`QFT failed: ${err}`, "error");
+  }
+}
+
+el.qftForm.onsubmit = onQftSubmit;

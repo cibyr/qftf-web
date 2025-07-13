@@ -42,6 +42,10 @@ button {
     width: 100%;
 }
 
+button:disabled {
+    background-color: #999;
+}
+
 .good-input {
   background-color: #ddffdd;
   border: 1px solid #4ecb4e;

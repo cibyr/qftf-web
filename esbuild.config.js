@@ -6,7 +6,7 @@ const options = {
     bundle: true,
     outfile: './public/js/main.js',
     format: 'esm',
-    target: 'es2015',
+    target: 'es2022',
     minify: true,
     sourcemap: true,
 }
