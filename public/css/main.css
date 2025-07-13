@@ -1,0 +1,49 @@
+.container {
+    margin-top: 1em;
+}
+
+h5, p {
+    margin-top: 0.5em;
+}
+
+label {
+    display: inline-block;
+}
+
+.viewport {
+    display: inline-block;
+    position: relative;
+}
+
+video, #note {
+    display: none;
+    max-width: 100%;
+}
+
+#videoBtn.button-primary ~ .viewport > #video {
+    display: block;
+}
+
+#canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+pre {
+    font-size: 1.35rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+button {
+    width: 100%;
+}
+
+.good-input {
+  background-color: #ddffdd;
+  border: 1px solid #4ecb4e;
+  box-shadow: 0 0 3px rgba(195, 230, 195, 0.4);
+}

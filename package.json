@@ -1,0 +1,16 @@
+{
+  "name": "qft-web",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "node esbuild.config.js",
+  },
+  "author": "Ian Cullinan <cibyr@cibyr.com>",
+  "license": "WTFPL",
+  "dependencies": {
+    "@undecaf/barcode-detector-polyfill": "^0.9.22"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.6",
+  }
+}
