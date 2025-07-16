@@ -1,5 +1,5 @@
 import { BarcodeDetectorPolyfill } from '@undecaf/barcode-detector-polyfill'
-import init, { EchoNode } from "../public/wasm/qft_web.js";
+import init, { QftfNode } from "../public/js/qftf_web.js";
 
 const el = {}
 
@@ -34,19 +34,19 @@ function log(line, className, parent) {
 function areWeReady() {
     if (launched && el.txcode.value != '' && el.rxcode.value != '') {
         el.goBtn.disabled = false;
+        el.goBtn.className = 'button-primary';
     }
 }
 
 function parseQrCode(rawValue) {
-    // Parse the code as a URL, look at hash, see if it starts with "#qft-tx:" or "qft-rx:"
+    // Parse the code as a URL, look at hash, see if it starts with "#qftf-tx:" or "qftf-rx:"
     const url = new URL(rawValue);
     const decoded = decodeURIComponent(url.hash.substring(1));
-    const $form = document.querySelector("form#qft");
-    if (decoded.startsWith("qft-tx:")) {
+    if (decoded.startsWith("qftf-tx:")) {
       el.txcode.value = decoded;
       el.txcode.className = 'good-input';
       return true;
-    } else if (decoded.startsWith("qft-rx:")) {
+    } else if (decoded.startsWith("qftf-rx:")) {
       el.rxcode.value = decoded;
       el.rxcode.className = 'good-input';
       return true;
@@ -63,7 +63,7 @@ function detect(source) {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
 
             symbols.forEach(symbol => {
-                const qftCode = parseQrCode(symbol.rawValue);
+                const qftfCode = parseQrCode(symbol.rawValue);
                 areWeReady();
 
                 const lastCornerPoint = symbol.cornerPoints[symbol.cornerPoints.length - 1]
@@ -71,7 +71,7 @@ function detect(source) {
                 symbol.cornerPoints.forEach(point => ctx.lineTo(point.x, point.y))
 
                 ctx.lineWidth = 3
-                if (qftCode) {
+                if (qftfCode) {
                     ctx.strokeStyle = '#00e000ff'
                 } else {
                     ctx.strokeStyle = '#e00000ff'
@@ -103,6 +103,16 @@ function detectVideo(repeat) {
 
 createDetector()
 
+function stopCamera() {
+    el.videoBtn.innerHTML = 'Start Camera'
+    el.videoBtn.className = ''
+    detectVideo(false)
+    if (el.video.srcObject) {
+        el.video.srcObject.getTracks().forEach(track => track.stop())
+        el.video.srcObject = null
+    }
+}
+
 el.videoBtn.addEventListener('click', event => {
     if (!requestId) {
         navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: 'environment'}})
@@ -117,41 +127,36 @@ el.videoBtn.addEventListener('click', event => {
             .catch(error => {
                 log(JSON.stringify(error), "error");
             })
-
     } else {
-        el.videoBtn.innerHTML = 'Start Camera'
-        el.videoBtn.className = ''
-        detectVideo(false)
-        if (el.video.srcObject) {
-            el.video.srcObject.getTracks().forEach(track => track.stop())
-            el.video.srcObject = null
-        }
+        stopCamera();
     }
 })
 
 log("Loading...");
 await init();
-const node = await EchoNode.spawn();
+const node = await QftfNode.spawn();
 launched = true;
 areWeReady();
 log("Iroh endpoint launched");
 log("Our node id: " + node.node_id());
 
-// initiate QFT on form submit
-async function onQftSubmit(e) {
+// initiate QFTF on form submit
+async function onQftfSubmit(e) {
   e.preventDefault();
   const data = new FormData(e.target);
   const txcode = data.get("txcode");
   const rxcode = data.get("rxcode");
   if (!txcode || !rxcode) return;
 
+  stopCamera();
+
   try {
-    log("QFTing...");
-    await node.trigger_qft(txcode, rxcode);
-    log("Yay!");
+    log("QFTFing...");
+    await node.trigger_qftf(txcode, rxcode);
+    log("Transfer has started - you can close this page now");
   } catch (err) {
-    log(`QFT failed: ${err}`, "error");
+    log(`QFTF failed: ${err}`, "error");
   }
 }
 
-el.qftForm.onsubmit = onQftSubmit;
+el.qftForm.onsubmit = onQftfSubmit;

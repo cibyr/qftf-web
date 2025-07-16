@@ -1,10 +1,10 @@
 {
-  "name": "qft-web",
+  "name": "qftf-web",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "cargo build --target=wasm32-unknown-unknown && wasm-bindgen ./target/wasm32-unknown-unknown/debug/qft_web.wasm --out-dir=public/js --weak-refs --target=web --debug && node esbuild.config.js",
-    "build:release": "cargo build --target=wasm32-unknown-unknown --release && wasm-bindgen ./target/wasm32-unknown-unknown/release/qft_web.wasm --out-dir=public/js --weak-refs --target=web && wasm-opt -Os -o public/js/qft_web_bg.wasm public/js/qft_web_bg.wasm && node esbuild.config.js"
+    "build": "cargo build --target=wasm32-unknown-unknown && wasm-bindgen ./target/wasm32-unknown-unknown/debug/qftf_web.wasm --out-dir=public/js --weak-refs --target=web --debug && node esbuild.config.js",
+    "build:release": "cargo build --target=wasm32-unknown-unknown --release && wasm-bindgen ./target/wasm32-unknown-unknown/release/qftf_web.wasm --out-dir=public/js --weak-refs --target=web && wasm-opt -Os -o public/js/qftf_web_bg.wasm public/js/qftf_web_bg.wasm && node esbuild.config.js"
   },
   "author": "Ian Cullinan <cibyr@cibyr.com>",
   "license": "WTFPL",

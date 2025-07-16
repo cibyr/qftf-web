@@ -2611,7 +2611,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "qft-web"
+name = "qftf-web"
 version = "0.1.0"
 dependencies = [
  "anyhow",
