@@ -7,4 +7,4 @@
 [x] test on iPhone
 [x] finish rename to QFTF
 [ ] write readme
-[ ] clean up deps
+[x] clean up deps
