@@ -38,10 +38,8 @@ function areWeReady() {
     }
 }
 
-function parseQrCode(rawValue) {
-    // Parse the code as a URL, look at hash, see if it starts with "#qftf-tx:" or "qftf-rx:"
-    const url = new URL(rawValue);
-    const decoded = decodeURIComponent(url.hash.substring(1));
+function parseHash(hash) {
+    const decoded = decodeURIComponent(hash.substring(1));
     if (decoded.startsWith("qftf-tx:")) {
       el.txcode.value = decoded;
       el.txcode.className = 'good-input';
@@ -52,6 +50,12 @@ function parseQrCode(rawValue) {
       return true;
     }
     return false;
+}
+
+function parseQrCode(rawValue) {
+    // Parse the code as a URL, look at hash, see if it starts with "#qftf-tx:" or "qftf-rx:"
+    const url = new URL(rawValue);
+    return parseHash(url.hash);
 }
 
 function detect(source) {
@@ -101,8 +105,6 @@ function detectVideo(repeat) {
     }
 }
 
-createDetector()
-
 function stopCamera() {
     el.videoBtn.innerHTML = 'Start Camera'
     el.videoBtn.className = ''
@@ -112,6 +114,9 @@ function stopCamera() {
         el.video.srcObject = null
     }
 }
+
+parseHash(window.location.hash);
+createDetector();
 
 el.videoBtn.addEventListener('click', event => {
     if (!requestId) {
