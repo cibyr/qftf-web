@@ -9,7 +9,7 @@
   "author": "Ian Cullinan <cibyr@cibyr.com>",
   "license": "WTFPL",
   "dependencies": {
-    "@undecaf/barcode-detector-polyfill": "^0.9.22"
+    "@undecaf/barcode-detector-polyfill": "0.9.22"
   },
   "devDependencies": {
     "esbuild": "^0.25.6"
