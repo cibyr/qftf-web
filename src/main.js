@@ -1,5 +1,5 @@
 import { BarcodeDetectorPolyfill } from '@undecaf/barcode-detector-polyfill'
-import init, { QftfNode } from "../public/js/qftf_web.js";
+import init, { QftfInitiator } from "../public/js/qftf_web.js";
 
 const el = {}
 
@@ -139,11 +139,11 @@ el.videoBtn.addEventListener('click', event => {
 
 log("Loading...");
 await init();
-const node = await QftfNode.spawn();
+const initiator = await QftfInitiator.spawn();
 launched = true;
 areWeReady();
 log("Iroh endpoint launched");
-log("Our node id: " + node.node_id());
+log("Our addr: " + initiator.node_addr());
 
 // initiate QFTF on form submit
 async function onQftfSubmit(e) {
@@ -157,7 +157,7 @@ async function onQftfSubmit(e) {
 
   try {
     log("QFTFing...");
-    await node.trigger_qftf(txcode, rxcode);
+    await initiator.trigger_qftf(txcode, rxcode);
     log("Transfer has started - you can close this page now");
   } catch (err) {
     log(`QFTF failed: ${err}`, "error");
