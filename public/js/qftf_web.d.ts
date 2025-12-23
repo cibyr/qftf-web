@@ -1,82 +1,98 @@
 /* tslint:disable */
 /* eslint-disable */
-export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
  * *This API requires the following crate features to be activated: `ReadableStreamType`*
  */
+
 type ReadableStreamType = "bytes";
+
 export class IntoUnderlyingByteSource {
   private constructor();
   free(): void;
-  start(controller: ReadableByteStreamController): void;
+  [Symbol.dispose](): void;
   pull(controller: ReadableByteStreamController): Promise<any>;
+  start(controller: ReadableByteStreamController): void;
   cancel(): void;
-  readonly type: ReadableStreamType;
   readonly autoAllocateChunkSize: number;
+  readonly type: ReadableStreamType;
 }
+
 export class IntoUnderlyingSink {
   private constructor();
   free(): void;
-  write(chunk: any): Promise<any>;
-  close(): Promise<any>;
+  [Symbol.dispose](): void;
   abort(reason: any): Promise<any>;
+  close(): Promise<any>;
+  write(chunk: any): Promise<any>;
 }
+
 export class IntoUnderlyingSource {
   private constructor();
   free(): void;
+  [Symbol.dispose](): void;
   pull(controller: ReadableStreamDefaultController): Promise<any>;
   cancel(): void;
 }
-export class QftfNode {
+
+export class QftfInitiator {
   private constructor();
   free(): void;
-  static spawn(): Promise<QftfNode>;
-  node_id(): string;
+  [Symbol.dispose](): void;
   trigger_qftf(txcode: string, rxcode: string): Promise<void>;
+  static spawn(): Promise<QftfInitiator>;
+  node_addr(): string;
 }
+
+export function start(): void;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly __wbg_qftfinitiator_free: (a: number, b: number) => void;
+  readonly qftfinitiator_node_addr: (a: number, b: number) => void;
+  readonly qftfinitiator_spawn: () => number;
+  readonly qftfinitiator_trigger_qftf: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly start: () => void;
-  readonly __wbg_qftfnode_free: (a: number, b: number) => void;
-  readonly qftfnode_spawn: () => number;
-  readonly qftfnode_node_id: (a: number, b: number) => void;
-  readonly qftfnode_trigger_qftf: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly __wbg_intounderlyingbytesource_free: (a: number, b: number) => void;
-  readonly intounderlyingbytesource_type: (a: number) => number;
-  readonly intounderlyingbytesource_autoAllocateChunkSize: (a: number) => number;
-  readonly intounderlyingbytesource_start: (a: number, b: number) => void;
-  readonly intounderlyingbytesource_pull: (a: number, b: number) => number;
-  readonly intounderlyingbytesource_cancel: (a: number) => void;
-  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
-  readonly intounderlyingsource_pull: (a: number, b: number) => number;
-  readonly intounderlyingsource_cancel: (a: number) => void;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
-  readonly intounderlyingsink_write: (a: number, b: number) => number;
-  readonly intounderlyingsink_close: (a: number) => number;
+  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
+  readonly intounderlyingbytesource_autoAllocateChunkSize: (a: number) => number;
+  readonly intounderlyingbytesource_cancel: (a: number) => void;
+  readonly intounderlyingbytesource_pull: (a: number, b: number) => number;
+  readonly intounderlyingbytesource_start: (a: number, b: number) => void;
+  readonly intounderlyingbytesource_type: (a: number) => number;
   readonly intounderlyingsink_abort: (a: number, b: number) => number;
+  readonly intounderlyingsink_close: (a: number) => number;
+  readonly intounderlyingsink_write: (a: number, b: number) => number;
+  readonly intounderlyingsource_cancel: (a: number) => void;
+  readonly intounderlyingsource_pull: (a: number, b: number) => number;
   readonly ring_core_0_17_14__bn_mul_mont: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
-  readonly __wbindgen_export_0: (a: number) => void;
-  readonly __wbindgen_export_1: (a: number, b: number, c: number) => void;
-  readonly __wbindgen_export_2: (a: number, b: number) => number;
-  readonly __wbindgen_export_3: (a: number, b: number, c: number, d: number) => number;
-  readonly __wbindgen_export_4: WebAssembly.Table;
+  readonly __wasm_bindgen_func_elem_12053: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_12035: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_1767: (a: number, b: number, c: number) => void;
+  readonly __wasm_bindgen_func_elem_1360: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_6219: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_6209: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_4655: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_4637: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_12115: (a: number, b: number, c: number) => void;
+  readonly __wasm_bindgen_func_elem_12099: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_5460: (a: number, b: number, c: number) => void;
+  readonly __wasm_bindgen_func_elem_5415: (a: number, b: number) => void;
+  readonly __wasm_bindgen_func_elem_12242: (a: number, b: number, c: number, d: number) => void;
+  readonly __wbindgen_export: (a: number, b: number) => number;
+  readonly __wbindgen_export2: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbindgen_export3: (a: number) => void;
+  readonly __wbindgen_export4: (a: number, b: number, c: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
-  readonly __wbindgen_export_5: (a: number, b: number, c: number) => void;
-  readonly __wbindgen_export_6: (a: number, b: number) => void;
-  readonly __wbindgen_export_7: (a: number, b: number, c: number) => void;
-  readonly __wbindgen_export_8: (a: number, b: number) => void;
-  readonly __wbindgen_export_9: (a: number, b: number) => void;
-  readonly __wbindgen_export_10: (a: number, b: number, c: number) => void;
-  readonly __wbindgen_export_11: (a: number, b: number, c: number, d: number) => void;
   readonly __wbindgen_start: () => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;
+
 /**
 * Instantiates the given `module`, which can either be bytes or
 * a precompiled `WebAssembly.Module`.
