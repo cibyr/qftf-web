@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use iroh::{Endpoint, NodeAddr};
+use iroh::{Endpoint, EndpointAddr};
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber_wasm::MakeConsoleWriter;
 use wasm_bindgen::{JsError, prelude::wasm_bindgen};
@@ -27,15 +27,14 @@ fn start() {
 }
 
 #[wasm_bindgen]
-pub struct QftfNode {
+pub struct QftfInitiator {
     endpoint: Endpoint,
 }
 
 #[wasm_bindgen]
-impl QftfNode {
+impl QftfInitiator {
     pub async fn spawn() -> Result<Self, JsError> {
         let endpoint = Endpoint::builder()
-            .discovery_n0()
             .bind()
             .await
             .map_err(to_js_err)?;
@@ -43,8 +42,8 @@ impl QftfNode {
         Ok(Self{ endpoint })
     }
 
-    pub fn node_id(&self) -> String {
-        self.endpoint.node_id().to_string()
+    pub fn node_addr(&self) -> String {
+        format!("{:?}", self.endpoint.addr())
     }
 
     async fn do_qftf(&self, txcode: String, rxcode: String) -> Result<()> {
@@ -55,7 +54,7 @@ impl QftfNode {
         let rx_json = rxcode
             .strip_prefix(RX_PREFIX)
             .context("RXCODE must start with qftf-rx:?")?;
-        let rx_addr: NodeAddr = serde_json::from_str(rx_json).context("couldn't parse rx json")?;
+        let rx_addr: EndpointAddr = serde_json::from_str(rx_json).context("couldn't parse rx json")?;
 
         //  * connect to receiver's endpoint, send FT json
         tracing::info!("Connecting to receiver");
