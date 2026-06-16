@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use iroh::endpoint::presets;
 use iroh::{Endpoint, EndpointAddr};
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber_wasm::MakeConsoleWriter;
@@ -34,7 +35,7 @@ pub struct QftfInitiator {
 #[wasm_bindgen]
 impl QftfInitiator {
     pub async fn spawn() -> Result<Self, JsError> {
-        let endpoint = Endpoint::builder()
+        let endpoint = Endpoint::builder(presets::N0)
             .bind()
             .await
             .map_err(to_js_err)?;
